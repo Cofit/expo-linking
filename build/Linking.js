@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import URL from 'url-parse';
 import NativeLinking from './ExpoLinking';
-const { manifest } = Constants;
+const { manifest = {} } = Constants;
 function validateURL(url) {
     invariant(typeof url === 'string', 'Invalid URL: should be a string. Was: ' + url);
     invariant(url, 'Invalid URL: cannot be empty');
