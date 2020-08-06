@@ -13,21 +13,21 @@ function validateURL(url) {
     invariant(url, 'Invalid URL: cannot be empty');
 }
 function usesCustomScheme() {
-    return Constants.appOwnership === 'standalone' && manifest?.scheme;
+    return Constants.appOwnership === 'standalone' && manifest.scheme;
 }
 function getHostUri() {
-    if (!manifest?.hostUri && !usesCustomScheme()) {
+    if (manifest && !manifest.hostUri && !usesCustomScheme()) {
         // we're probably not using up-to-date xdl, so just fake it for now
         // we have to remove the /--/ on the end since this will be inserted again later
         return removeScheme(Constants.linkingUri).replace(/\/--($|\/.*$)/, '');
     }
-    return manifest?.hostUri;
+    return manifest && manifest.hostUri;
 }
 function isExpoHosted() {
     const hostUri = getHostUri();
     return !!(hostUri &&
         (/^(.*\.)?(expo\.io|exp\.host|exp\.direct|expo\.test)(:.*)?(\/.*)?$/.test(hostUri) ||
-            manifest?.developer));
+            manifest.developer));
 }
 function removeScheme(url) {
     return url.replace(/^[a-zA-Z0-9+.-]+:\/\//, '');
@@ -97,7 +97,7 @@ export function makeUrl(path = '', queryParams = {}) {
         return '';
     }
     let scheme = 'exp';
-    const manifestScheme = manifest?.scheme ?? manifest?.detach?.scheme;
+    const manifestScheme = manifest.scheme ?? manifest?.detach?.scheme;
     if (Constants.appOwnership === 'standalone' && manifestScheme) {
         scheme = manifestScheme;
     }
